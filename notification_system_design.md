@@ -133,3 +133,85 @@ DELETE /notifications/:id
 Content-Type: application/json
 Authorization: Bearer token
 ```
+
+
+# Stage 2
+
+## Database Choice
+
+I would use PostgreSQL as the primary relational database because:
+
+- It supports structured notification data efficiently.
+- Good indexing support.
+- Reliable transactions.
+- Better scalability for large datasets.
+
+---
+
+# Notifications Table Schema
+
+```sql
+CREATE TABLE notifications (
+    id UUID PRIMARY KEY,
+    studentId INT,
+    notificationType VARCHAR(50),
+    message TEXT,
+    isRead BOOLEAN DEFAULT false,
+    createdAt TIMESTAMP
+);
+```
+
+---
+
+# Problems With Increasing Data Volume
+
+As notification data increases:
+
+- Query performance becomes slower.
+- Fetching unread notifications may take more time.
+- Sorting by timestamp becomes expensive.
+- Database load increases heavily.
+
+---
+
+# Solutions
+
+- Add indexes on frequently searched columns.
+- Use pagination.
+- Archive old notifications.
+- Use caching systems like Redis.
+- Partition tables for scalability.
+
+---
+
+# Example SQL Queries
+
+## Get unread notifications
+
+```sql
+SELECT * FROM notifications
+WHERE studentId = 1042
+AND isRead = false
+ORDER BY createdAt DESC;
+```
+
+---
+
+## Create notification
+
+```sql
+INSERT INTO notifications
+(id, studentId, notificationType, message, createdAt)
+VALUES
+('abc123', 1042, 'Placement', 'Amazon Hiring', NOW());
+```
+
+---
+
+## Mark notification as read
+
+```sql
+UPDATE notifications
+SET isRead = true
+WHERE id = 'abc123';
+```
