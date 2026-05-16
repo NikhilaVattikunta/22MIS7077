@@ -1,25 +1,68 @@
-# Vehicle Maintenance Scheduler Microservice
+# Campus Notification Backend System
 
-## Tech Stack
-- Node.js
-- Express.js
+Backend assessment submission for AffordMed campus hiring evaluation.
 
 ## Features
-- Fetch depot data
-- Fetch vehicle maintenance tasks
-- REST APIs implemented
-- Backend server running on localhost:3000
 
-## APIs
+- Notification REST APIs
+- Logging Middleware
+- Priority Notification Sorting
+- Express.js Backend
+- Real-Time Notification Design
+- PostgreSQL Database Design
+- Optimized Query Strategies
 
-### GET /depots
-Returns depot mechanic hours.
+---
 
-### GET /vehicles
-Returns vehicle maintenance tasks.
+## Tech Stack
+
+- Node.js
+- Express.js
+- JavaScript
+- Git & GitHub
+
+---
 
 ## Run Project
 
+```bash
 npm install
-
 node src/app.js
+```
+
+---
+
+## API Endpoints
+
+### Get Notifications
+
+```http
+GET /notifications
+```
+
+### Root Endpoint
+
+```http
+GET /
+```
+
+---
+
+## Notification Priority Order
+
+1. Placement
+2. Result
+3. Event
+
+---
+
+## Project Structure
+
+```txt
+src/
+ ├── middleware/
+ ├── routes/
+ ├── services/
+ ├── utils/
+ └── app.js
+```
