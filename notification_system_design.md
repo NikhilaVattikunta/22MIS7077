@@ -381,3 +381,96 @@ Tradeoff:
 - Redis for caching
 - WebSockets for real-time updates
 - Pagination for optimized fetching
+
+
+# Stage 5
+
+## Priority Notification Processing
+
+Priority order:
+
+1. Placement
+2. Result
+3. Event
+
+Notifications are sorted based on:
+
+- Priority type
+- Latest timestamp
+
+---
+
+# Approach
+
+## Step 1
+
+Assign priority values:
+
+| Type | Priority |
+|------|-----------|
+| Placement | 3 |
+| Result | 2 |
+| Event | 1 |
+
+---
+
+## Step 2
+
+Use sorting:
+
+- Higher priority first
+- If same priority:
+  - Latest timestamp first
+
+---
+
+# Example JavaScript Logic
+
+```javascript
+const priorityMap = {
+    Placement: 3,
+    Result: 2,
+    Event: 1
+};
+
+notifications.sort((a, b) => {
+
+    if (priorityMap[b.type] !== priorityMap[a.type]) {
+        return priorityMap[b.type] - priorityMap[a.type];
+    }
+
+    return new Date(b.timestamp) - new Date(a.timestamp);
+});
+```
+
+---
+
+# Time Complexity
+
+Sorting complexity:
+
+```text
+O(n log n)
+```
+
+where `n` is number of notifications.
+
+---
+
+# Optimization For Large Scale Systems
+
+For very large datasets:
+
+- Use priority queues
+- Use message brokers like Kafka
+- Process asynchronously
+- Cache top notifications
+
+---
+
+# Benefits Of This Design
+
+- Faster access to important notifications
+- Better user experience
+- Efficient notification ranking
+- Scalable architecture
