@@ -215,3 +215,77 @@ UPDATE notifications
 SET isRead = true
 WHERE id = 'abc123';
 ```
+
+
+# Stage 3
+
+## Query Analysis
+
+```sql
+SELECT * FROM notifications
+WHERE studentID = 1042 AND isRead = false
+ORDER BY createdAt DESC;
+```
+
+---
+
+# Why Is This Query Slow?
+
+This query becomes slow because:
+
+- The table contains millions of records.
+- Full table scans may occur without indexes.
+- Sorting large datasets using `ORDER BY` is expensive.
+
+---
+
+# Improvements
+
+Use composite indexing:
+
+```sql
+CREATE INDEX idx_notifications
+ON notifications(studentID, isRead, createdAt DESC);
+```
+
+This improves:
+
+- Filtering speed
+- Sorting performance
+- Query execution efficiency
+
+---
+
+# Computational Cost
+
+Without indexing:
+- Time Complexity ≈ O(n)
+
+With indexing:
+- Time Complexity ≈ O(log n)
+
+---
+
+# Should We Add Indexes On Every Column?
+
+No.
+
+Adding indexes on every column is not efficient because:
+
+- Inserts become slower.
+- Updates become slower.
+- Storage usage increases.
+- Many indexes remain unused.
+
+Indexes should only be added to frequently queried columns.
+
+---
+
+# Query To Find Placement Notifications
+
+```sql
+SELECT *
+FROM notifications
+WHERE notificationType = 'Placement'
+AND createdAt >= NOW() - INTERVAL '7 days';
+```
