@@ -289,3 +289,95 @@ FROM notifications
 WHERE notificationType = 'Placement'
 AND createdAt >= NOW() - INTERVAL '7 days';
 ```
+
+
+# Stage 4
+
+## Problem
+
+Notifications are fetched on every page load for every student.
+
+This creates:
+
+- Heavy database load
+- Increased API response time
+- Poor user experience
+- High server resource consumption
+
+---
+
+# Solutions
+
+## 1. Pagination
+
+Instead of fetching all notifications:
+
+```http
+GET /notifications?page=1&limit=10
+```
+
+Benefits:
+
+- Faster response
+- Lower DB load
+- Reduced memory usage
+
+---
+
+## 2. Caching Using Redis
+
+Store frequently accessed notifications temporarily in Redis.
+
+Benefits:
+
+- Faster reads
+- Reduced database queries
+- Better scalability
+
+Tradeoff:
+
+- Cache invalidation complexity
+
+---
+
+## 3. Lazy Loading
+
+Load notifications only when needed.
+
+Benefits:
+
+- Reduced initial page load time
+- Better frontend performance
+
+---
+
+## 4. Database Indexing
+
+Indexes improve query speed for unread notifications and sorting operations.
+
+---
+
+## 5. WebSockets For Real-Time Updates
+
+Instead of polling repeatedly:
+
+- Server pushes notifications instantly.
+- Reduces unnecessary API requests.
+
+Benefits:
+
+- Real-time experience
+- Lower network overhead
+
+Tradeoff:
+
+- Persistent connections consume memory
+
+---
+
+# Recommended Architecture
+
+- PostgreSQL for storage
+- Redis for caching
+- WebSockets for real-time updates
+- Pagination for optimized fetching
